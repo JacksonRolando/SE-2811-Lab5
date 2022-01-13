@@ -16,7 +16,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +30,7 @@ public class SimpleCanvasController {
 
     private Canvas canvas;
 
-    private Map<String, Network> displayable_networks = new HashMap<>();
+    private Map<String, ConcreteNetwork> displayable_networks = new HashMap<>();
 
     /** TODO: PLEASE PLEASE find a new home for RADIUS! It doesn't belong as a responsibility of the
      * controller! You might also want to make it variable. */
@@ -52,7 +51,7 @@ public class SimpleCanvasController {
             System.out.println("Warning: Unknown network id:"+id);
         } else {
             System.out.println("DEBUG: Drawing network: "+id);
-            Network network = displayable_networks.get(id);
+            ConcreteNetwork network = displayable_networks.get(id);
 
             //TODO: Delete this example code
             drawNode(canvas, 100,100);
@@ -75,7 +74,7 @@ public class SimpleCanvasController {
      * as described in the lab.
      * @return network The network created.
      */
-    private Network createInception() {
+    private ConcreteNetwork createInception() {
         return null; // TODO return the network
     }
 
@@ -84,7 +83,7 @@ public class SimpleCanvasController {
      * as described in the lab.
      * @return network The network created.
      */
-    private Network createAlexNet() {
+    private ConcreteNetwork createAlexNet() {
         return null; // TODO return the network
     }
 
