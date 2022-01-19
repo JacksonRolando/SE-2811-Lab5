@@ -1,31 +1,38 @@
 package networks;
 
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
 public class Line {
-    private double startX;
-    private double startY;
-    private double endX;
-    private double endY;
+    private Node start;
+    private Node end;
 
-    public Line(double startX, double startY, double endX, double endY) {
-        this.startX = startX;
-        this.startY = startY;
-        this.endX = endX;
-        this.endY = endY;
+    public Line(Node start, Node end) {
+        this.start = start;
+        this.end = end;
     }
 
-    public double getStartX() {
-        return startX;
+    public void draw(Canvas destination) {
+        GraphicsContext context = destination.getGraphicsContext2D();
+        Point2D p1 = new Point2D(start.getX(), start.getY());
+        Point2D p2 = new Point2D(end.getX(), end.getY());
+
+        Point2D direction = p2.subtract(p1).normalize();
+        Point2D startRad = direction.multiply(start.getRadius());
+        Point2D endRad = direction.multiply(end.getRadius());
+
+        Point2D lineStart = p1.add(startRad);
+        Point2D lineEnd = p2.subtract(endRad);
+
+        context.strokeLine(lineStart.getX(), lineStart.getY(), lineEnd.getX(), lineEnd.getY());
     }
 
-    public double getStartY() {
-        return startY;
+    public Node getStart() {
+        return start;
     }
 
-    public double getEndX() {
-        return endX;
-    }
-
-    public double getEndY() {
-        return endY;
+    public Node getEnd() {
+        return end;
     }
 }

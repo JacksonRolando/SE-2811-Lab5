@@ -16,6 +16,9 @@
             <ToggleButton fx:id="inceptionLike" text="Inception-Like"
                           toggleGroup="$network" onAction="#showNetwork">
             </ToggleButton>
+            <ToggleButton fx:id="funNet" text="Fun Net (The Big Test)"
+                          toggleGroup="$network" onAction="#showNetwork">
+            </ToggleButton>
         </items>
       </ToolBar>
    </top>

@@ -9,7 +9,6 @@ package networks;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ToggleButton;
@@ -30,11 +29,7 @@ public class SimpleCanvasController {
 
     private Canvas canvas;
 
-    private Map<String, ConcreteNetwork> displayable_networks = new HashMap<>();
-
-    /** TODO: PLEASE PLEASE find a new home for RADIUS! It doesn't belong as a responsibility of the
-     * controller! You might also want to make it variable. */
-    private static final double RADIUS = 40;
+    private Map<String, NeuralNetwork> displayable_networks = new HashMap<>();
 
     @FXML
     private void showNetwork(ActionEvent actionEvent) {
@@ -51,14 +46,7 @@ public class SimpleCanvasController {
             System.out.println("Warning: Unknown network id:"+id);
         } else {
             System.out.println("DEBUG: Drawing network: "+id);
-            ConcreteNetwork network = displayable_networks.get(id);
-
-            //TODO: Delete this example code
-            drawNode(canvas, 100,100);
-            drawNode(canvas, 300,400);
-            drawEdge(canvas, 100, 100, 300, 400);
-            //ENDTODO
-
+            NeuralNetwork network = displayable_networks.get(id);
             network.draw(canvas);
         }
     }
@@ -67,6 +55,7 @@ public class SimpleCanvasController {
     private void initialize() {
         displayable_networks.put("alexLike", createAlexNet());
         displayable_networks.put("inceptionLike", createInception());
+        displayable_networks.put("funNet", createFunNet());
     }
 
     /**
@@ -74,8 +63,13 @@ public class SimpleCanvasController {
      * as described in the lab.
      * @return network The network created.
      */
-    private ConcreteNetwork createInception() {
-        return null; // TODO return the network
+    private NeuralNetwork createInception() {
+        NeuralNetwork network = new SimpleNetwork(3, 100, 100);
+        network = new ConvolutionLayerNet(network);
+        network = new ConvolutionLayerNet(network);
+        network = new ConvolutionLayerNet(network);
+
+        return network;
     }
 
     /**
@@ -83,8 +77,25 @@ public class SimpleCanvasController {
      * as described in the lab.
      * @return network The network created.
      */
-    private ConcreteNetwork createAlexNet() {
-        return null; // TODO return the network
+    private NeuralNetwork createAlexNet() {
+        NeuralNetwork network = new SimpleNetwork(4, 100, 100);
+        network = new ConvolutionLayerNet(network);
+        network = new ConvolutionLayerNet(network);
+        network = new FullyConnectedNet(network, 4);
+        network = new FullyConnectedNet(network, 3);
+        return network;
+    }
+
+    private NeuralNetwork createFunNet() {
+        NeuralNetwork network = new SimpleNetwork(4, 100, 100);
+        network = new FullyConnectedNet(network, 7);
+        network = new FullyConnectedNet(network, 6);
+        network = new ConvolutionLayerNet(network);
+        network = new FullyConnectedNet(network, 1);
+        network = new ConvolutionLayerNet(network);
+        network = new FullyConnectedNet(network, 4);
+        network = new ConvolutionLayerNet(network);
+        return network;
     }
 
 
@@ -94,12 +105,9 @@ public class SimpleCanvasController {
      * @param x center of the node
      * @param y center of the node
      */
-    /** TODO: PLEASE PLEASE find a new home for drawNode. It doesn't belong as a responsibility of the
-     *  controller! The name and parameters probably need updating as well.
-     */
-    public static void drawNode(Canvas canvas, int x, int y){
+    /*public static void drawNode(Canvas canvas, int x, int y){
         canvas.getGraphicsContext2D().strokeOval(x-RADIUS,y-RADIUS,2*RADIUS,2*RADIUS);
-    }
+    }*/
 
     /**
      * Draw an edge between two nodes.
@@ -110,11 +118,7 @@ public class SimpleCanvasController {
      * @param x2 center of second node
      * @param y2
      */
-    /** TODO: PLEASE PLEASE find a new home for drawEdge. It doesn't belong as a responsibility of the
-     *  controller! The name and parameters probably need updating as well.
-     *  Drawing arrows on the edges is not a requirement.
-     */
-    public static void drawEdge(Canvas canvas, double x1, double y1, double x2, double y2) {
+    /*public static void drawEdge(Canvas canvas, double x1, double y1, double x2, double y2) {
         GraphicsContext context = canvas.getGraphicsContext2D();
         Point2D p1 = new Point2D(x1, y1);
         Point2D p2 = new Point2D(x2, y2);
@@ -123,5 +127,5 @@ public class SimpleCanvasController {
         Point2D start = p1.add(radius);
         Point2D end = p2.subtract(radius);
         context.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
-    }
+    }*/
 }
